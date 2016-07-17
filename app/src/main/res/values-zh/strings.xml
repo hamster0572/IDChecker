@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">身分證/統編驗證器</string>
+    <string name="ID_String">身分證/統編</string>
+    <string name="btn_check">驗證！</string>
+    <string name="btn_clear">清空！</string>
+    <string name="msg_ID_invalid">輸入身分證/統編不正確</string>
+</resources>

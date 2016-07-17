@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ID Checker</string>
+    <string name="ID_String">ID</string>
+    <string name="btn_check">Check!</string>
+    <string name="btn_clear">Clear!</string>
+    <string name="msg_ID_invalid">Input ID invalid.</string>
+</resources>
