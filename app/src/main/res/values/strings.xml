@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ID Checker</string>
-    <string name="ID_String">ID</string>
+    <string name="app_name">Taiwan ID Checker</string>
+    <string name="ID_String">Taiwan ID</string>
     <string name="btn_check">Check!</string>
     <string name="btn_clear">Clear!</string>
-    <string name="msg_ID_invalid">Input ID invalid.</string>
+    <string name="msg_ID_invalid">Invalid!</string>
+    <string name="msg_ID_valid">Correct!</string>
 </resources>

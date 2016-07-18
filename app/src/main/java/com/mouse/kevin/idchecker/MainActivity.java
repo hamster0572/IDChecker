@@ -1,20 +1,24 @@
 package com.mouse.kevin.idchecker;
 
-import android.support.v7.app.AppCompatActivity;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private HashMap<String, int[]> charToInt = new HashMap();
-    private int[] individual_multiplier = {1, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1};
+    private final HashMap<String, int[]> charToInt = new HashMap();
+    private final int[] individual_multiplier = {1, 9, 8, 7, 6, 5, 4, 3, 2, 1, 1};
+    private final int[] corporate_multiplier = {1, 2, 1, 2, 1, 2, 4, 1};
 
 
     @Override
@@ -27,20 +31,47 @@ public class MainActivity extends AppCompatActivity {
         final Button btn_check = (Button) findViewById(R.id.btn_check);
         final Button btn_clear = (Button) findViewById(R.id.btn_clear);
         final EditText et_ID = (EditText) findViewById(R.id.input_ID);
+        final TextView tv_msg = (TextView) findViewById(R.id.text_msg);
+
 
         et_ID.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(10)});
 
         btn_check.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                String output = checkInput(et_ID.getText().toString());
-                et_ID.setText(output);
-                et_ID.setSelection(output.length());
+                if (checkInput(et_ID.getText().toString().toUpperCase())) {
+                    tv_msg.setText(R.string.msg_ID_valid);
+                } else {
+                    tv_msg.setText(R.string.msg_ID_invalid);
+                }
+                et_ID.setSelection(et_ID.getText().length());
             }
         });
 
         btn_clear.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 et_ID.setText("");
+                tv_msg.setText("");
+            }
+        });
+
+        et_ID.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                tv_msg.setText("");
+            }
+
+            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String s = String.valueOf(editable);
+                if ((checkPid(s)) || checkCid(s)) {
+                    btn_check.callOnClick();
+                }
             }
         });
     }
@@ -75,29 +106,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private String checkInput(String s) {
+    private boolean checkInput(String s) {
         // Individual ID
-        if (s.matches("^[A-Z]\\d{8,9}$")) {
+        if (checkPid(s)) {
             int[] code = charToInt.get(s.substring(0, 1));
-            int sum;
-            sum = individual_multiplier[0] * code[0] +
+            int sum = individual_multiplier[0] * code[0] +
                     individual_multiplier[1] * code[1] +
-                    individual_multiplier[2] * Integer.parseInt(s.substring(1, 2)) +
-                    individual_multiplier[3] * Integer.parseInt(s.substring(2, 3)) +
-                    individual_multiplier[4] * Integer.parseInt(s.substring(3, 4)) +
-                    individual_multiplier[5] * Integer.parseInt(s.substring(4, 5)) +
-                    individual_multiplier[6] * Integer.parseInt(s.substring(5, 6)) +
-                    individual_multiplier[7] * Integer.parseInt(s.substring(6, 7)) +
-                    individual_multiplier[8] * Integer.parseInt(s.substring(7, 8)) +
-                    individual_multiplier[9] * Integer.parseInt(s.substring(8, 9));
-            s = s.substring(0, 9) + String.valueOf((10 - (sum % 10)));
+                    individual_multiplier[2] * Character.getNumericValue(s.charAt(1)) +
+                    individual_multiplier[3] * Character.getNumericValue(s.charAt(2)) +
+                    individual_multiplier[4] * Character.getNumericValue(s.charAt(3)) +
+                    individual_multiplier[5] * Character.getNumericValue(s.charAt(4)) +
+                    individual_multiplier[6] * Character.getNumericValue(s.charAt(5)) +
+                    individual_multiplier[7] * Character.getNumericValue(s.charAt(6)) +
+                    individual_multiplier[8] * Character.getNumericValue(s.charAt(7)) +
+                    individual_multiplier[9] * Character.getNumericValue(s.charAt(8)) +
+                    individual_multiplier[10] * Character.getNumericValue(s.charAt(9));
+            return (sum % 10 == 0);
         }
         // Corporate ID
-        else if (s.matches("^\\d{7,8}$")) {
-
+        else if (checkCid(s)) {
+            int sum = 0;
+            boolean type2 = ((s.charAt(6) == '7'));
+            for (int i = 0; i < s.length(); i++) {
+                int tmp = Character.getNumericValue(s.charAt(i)) * corporate_multiplier[i];
+                sum += (tmp / 10) + (tmp % 10);
+            }
+            if (!type2) {
+                return (sum % 10 == 0);
+            } else {
+                return ((sum % 10 == 0) || (sum + 1) % 10 == 0);
+            }
         } else {
-            Toast.makeText(this, R.string.msg_ID_invalid, Toast.LENGTH_SHORT).show();
+            return false;
         }
-        return s;
+    }
+
+    private boolean checkPid(String pid) {
+        return (pid.matches("^[A-Z][1-2]\\d{8}$"));
+    }
+
+    private boolean checkCid(String cid) {
+        return (cid.matches("^\\d{8}$"));
     }
 }

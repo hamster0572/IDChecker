@@ -29,8 +29,10 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/input_ID"
+        android:layout_marginBottom="@dimen/main_button_vertical_margin"
         android:layout_marginLeft="@dimen/main_button_horizontal_margin"
-        android:layout_marginTop="@dimen/main_button_top_margin"
+        android:layout_marginStart="@dimen/main_button_horizontal_margin"
+        android:layout_marginTop="@dimen/main_button_vertical_margin"
         android:text="@string/btn_check"
         android:textAllCaps="false" />
 
@@ -42,6 +44,16 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/btn_check"
         android:layout_marginRight="@dimen/main_button_horizontal_margin"
+        android:layout_marginEnd="@dimen/main_button_horizontal_margin"
         android:text="@string/btn_clear"
         android:textAllCaps="false" />
+
+    <TextView
+        android:id="@+id/text_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_check"
+        android:layout_marginLeft="@dimen/main_button_horizontal_margin"
+        android:layout_marginRight="@dimen/main_button_horizontal_margin"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 </RelativeLayout>
