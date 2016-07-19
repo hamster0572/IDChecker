@@ -1,7 +1,5 @@
 package com.mouse.kevin.idchecker;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -38,11 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         btn_check.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                if (checkInput(et_ID.getText().toString().toUpperCase())) {
-                    tv_msg.setText(R.string.msg_ID_valid);
-                } else {
-                    tv_msg.setText(R.string.msg_ID_invalid);
-                }
+                tv_msg.setText((checkID(et_ID.getText().toString().toUpperCase())) ? R.string.msg_ID_valid : R.string.msg_ID_invalid);
                 et_ID.setSelection(et_ID.getText().length());
             }
         });
@@ -62,18 +56,64 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                et_ID.clearComposingText();
                 tv_msg.setText("");
             }
 
-            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
             @Override
             public void afterTextChanged(Editable editable) {
-                String s = String.valueOf(editable);
-                if ((checkPid(s)) || checkCid(s)) {
-                    btn_check.callOnClick();
+                int strLength = String.valueOf(editable).length();
+                if (strLength == 8 || strLength == 10) {
+                    tv_msg.setText((checkID(et_ID.getText().toString().toUpperCase())) ? R.string.msg_ID_valid : R.string.msg_ID_invalid);
+                } else if (strLength > 0) {
+                    tv_msg.setText(R.string.msg_ID_invalid);
                 }
+                et_ID.setSelection(et_ID.getText().length());
             }
         });
+    }
+
+    private boolean checkID(String inputID) {
+        boolean result = false;
+        // Individual ID
+        if (inputID.matches("^[A-Z][1-2]\\d{8}$")) {
+            result = checkPid(inputID);
+        }
+        // Corporate ID
+        else if (inputID.matches("^\\d{8}$")) {
+            result = checkCid(inputID);
+        }
+        return result;
+    }
+
+    private boolean checkPid(String pid) {
+        int[] code = charToInt.get(pid.substring(0, 1));
+        int sum = individual_multiplier[0] * code[0] +
+                individual_multiplier[1] * code[1] +
+                individual_multiplier[2] * Character.getNumericValue(pid.charAt(1)) +
+                individual_multiplier[3] * Character.getNumericValue(pid.charAt(2)) +
+                individual_multiplier[4] * Character.getNumericValue(pid.charAt(3)) +
+                individual_multiplier[5] * Character.getNumericValue(pid.charAt(4)) +
+                individual_multiplier[6] * Character.getNumericValue(pid.charAt(5)) +
+                individual_multiplier[7] * Character.getNumericValue(pid.charAt(6)) +
+                individual_multiplier[8] * Character.getNumericValue(pid.charAt(7)) +
+                individual_multiplier[9] * Character.getNumericValue(pid.charAt(8)) +
+                individual_multiplier[10] * Character.getNumericValue(pid.charAt(9));
+        return (sum % 10 == 0);
+    }
+
+    private boolean checkCid(String cid) {
+        int sum = 0;
+        boolean type2 = ((cid.charAt(6) == '7'));
+        for (int i = 0; i < cid.length(); i++) {
+            int tmp = Character.getNumericValue(cid.charAt(i)) * corporate_multiplier[i];
+            sum += (tmp / 10) + (tmp % 10);
+        }
+        if (!type2) {
+            return (sum % 10 == 0);
+        } else {
+            return ((sum % 10 == 0) || (sum + 1) % 10 == 0);
+        }
     }
 
     private void CreateCharToIntMap() {
@@ -103,49 +143,5 @@ public class MainActivity extends AppCompatActivity {
         charToInt.put("Z", new int[]{3, 3}); //連江縣
         charToInt.put("I", new int[]{3, 4}); //嘉義市
         charToInt.put("O", new int[]{3, 5}); //新竹市
-    }
-
-
-    private boolean checkInput(String s) {
-        // Individual ID
-        if (checkPid(s)) {
-            int[] code = charToInt.get(s.substring(0, 1));
-            int sum = individual_multiplier[0] * code[0] +
-                    individual_multiplier[1] * code[1] +
-                    individual_multiplier[2] * Character.getNumericValue(s.charAt(1)) +
-                    individual_multiplier[3] * Character.getNumericValue(s.charAt(2)) +
-                    individual_multiplier[4] * Character.getNumericValue(s.charAt(3)) +
-                    individual_multiplier[5] * Character.getNumericValue(s.charAt(4)) +
-                    individual_multiplier[6] * Character.getNumericValue(s.charAt(5)) +
-                    individual_multiplier[7] * Character.getNumericValue(s.charAt(6)) +
-                    individual_multiplier[8] * Character.getNumericValue(s.charAt(7)) +
-                    individual_multiplier[9] * Character.getNumericValue(s.charAt(8)) +
-                    individual_multiplier[10] * Character.getNumericValue(s.charAt(9));
-            return (sum % 10 == 0);
-        }
-        // Corporate ID
-        else if (checkCid(s)) {
-            int sum = 0;
-            boolean type2 = ((s.charAt(6) == '7'));
-            for (int i = 0; i < s.length(); i++) {
-                int tmp = Character.getNumericValue(s.charAt(i)) * corporate_multiplier[i];
-                sum += (tmp / 10) + (tmp % 10);
-            }
-            if (!type2) {
-                return (sum % 10 == 0);
-            } else {
-                return ((sum % 10 == 0) || (sum + 1) % 10 == 0);
-            }
-        } else {
-            return false;
-        }
-    }
-
-    private boolean checkPid(String pid) {
-        return (pid.matches("^[A-Z][1-2]\\d{8}$"));
-    }
-
-    private boolean checkCid(String cid) {
-        return (cid.matches("^\\d{8}$"));
     }
 }
