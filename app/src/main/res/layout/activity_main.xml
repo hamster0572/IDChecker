@@ -13,8 +13,9 @@
         android:id="@+id/input_ID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/main_editView_top_margin"
         android:ems="10"
         android:hint="@string/ID_String"
@@ -23,28 +24,12 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
-        android:id="@+id/btn_check"
-        android:layout_width="@dimen/main_button_width"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/input_ID"
-        android:layout_marginBottom="@dimen/main_button_vertical_margin"
-        android:layout_marginLeft="@dimen/main_button_horizontal_margin"
-        android:layout_marginStart="@dimen/main_button_horizontal_margin"
-        android:layout_marginTop="@dimen/main_button_vertical_margin"
-        android:text="@string/btn_check"
-        android:textAllCaps="false" />
-
-    <Button
         android:id="@+id/btn_clear"
         android:layout_width="@dimen/main_button_width"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/btn_check"
-        android:layout_marginRight="@dimen/main_button_horizontal_margin"
-        android:layout_marginEnd="@dimen/main_button_horizontal_margin"
+        android:layout_alignBottom="@+id/input_ID"
+        android:layout_toEndOf="@+id/input_ID"
+        android:layout_toRightOf="@+id/input_ID"
         android:text="@string/btn_clear"
         android:textAllCaps="false" />
 
@@ -52,8 +37,8 @@
         android:id="@+id/text_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_check"
-        android:layout_marginLeft="@dimen/main_button_horizontal_margin"
-        android:layout_marginRight="@dimen/main_button_horizontal_margin"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/input_ID"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 </RelativeLayout>

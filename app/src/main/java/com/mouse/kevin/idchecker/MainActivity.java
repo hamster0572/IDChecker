@@ -1,5 +1,7 @@
 package com.mouse.kevin.idchecker;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -26,20 +28,21 @@ public class MainActivity extends AppCompatActivity {
 
         CreateCharToIntMap();
 
-        final Button btn_check = (Button) findViewById(R.id.btn_check);
+//        final Button btn_check = (Button) findViewById(R.id.btn_check);
         final Button btn_clear = (Button) findViewById(R.id.btn_clear);
         final EditText et_ID = (EditText) findViewById(R.id.input_ID);
         final TextView tv_msg = (TextView) findViewById(R.id.text_msg);
+        et_ID.getBackground().setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_IN);
 
 
         et_ID.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(10)});
 
-        btn_check.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                tv_msg.setText((checkID(et_ID.getText().toString().toUpperCase())) ? R.string.msg_ID_valid : R.string.msg_ID_invalid);
-                et_ID.setSelection(et_ID.getText().length());
-            }
-        });
+//        btn_check.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                tv_msg.setText((checkID(et_ID.getText().toString().toUpperCase())) ? R.string.msg_ID_valid : R.string.msg_ID_invalid);
+//                et_ID.setSelection(et_ID.getText().length());
+//            }
+//        });
 
         btn_clear.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -63,10 +66,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 int strLength = String.valueOf(editable).length();
-                if (strLength == 8 || strLength == 10) {
-                    tv_msg.setText((checkID(et_ID.getText().toString().toUpperCase())) ? R.string.msg_ID_valid : R.string.msg_ID_invalid);
-                } else if (strLength > 0) {
-                    tv_msg.setText(R.string.msg_ID_invalid);
+                String inputID = et_ID.getText().toString().toUpperCase();
+                if (strLength > 0) {
+                    if ((strLength == 8 || strLength == 10) && (checkID(inputID))) {
+                        tv_msg.setText(R.string.msg_ID_valid);
+                        et_ID.setTextColor(Color.BLUE);
+                    } else {
+                        tv_msg.setText(R.string.msg_ID_invalid);
+                        et_ID.setTextColor(Color.RED);
+                    }
+                }
+                else{
+                    et_ID.setTextColor(Color.BLACK);
                 }
                 et_ID.setSelection(et_ID.getText().length());
             }
