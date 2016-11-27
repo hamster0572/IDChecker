@@ -32,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
         final EditText et_ID = (EditText) findViewById(R.id.input_ID);
         final TextView tv_msg = (TextView) findViewById(R.id.text_msg);
         et_ID.getBackground().setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_IN);
-
-
         et_ID.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(10)});
 
         btn_clear.setOnClickListener(new View.OnClickListener() {
