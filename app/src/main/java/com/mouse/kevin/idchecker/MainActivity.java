@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
         CreateCharToIntMap();
 
-//        final Button btn_check = (Button) findViewById(R.id.btn_check);
         final Button btn_clear = (Button) findViewById(R.id.btn_clear);
         final EditText et_ID = (EditText) findViewById(R.id.input_ID);
         final TextView tv_msg = (TextView) findViewById(R.id.text_msg);
@@ -36,13 +35,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         et_ID.setFilters(new InputFilter[]{new InputFilter.AllCaps(), new InputFilter.LengthFilter(10)});
-
-//        btn_check.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View view) {
-//                tv_msg.setText((checkID(et_ID.getText().toString().toUpperCase())) ? R.string.msg_ID_valid : R.string.msg_ID_invalid);
-//                et_ID.setSelection(et_ID.getText().length());
-//            }
-//        });
 
         btn_clear.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -75,8 +67,7 @@ public class MainActivity extends AppCompatActivity {
                         tv_msg.setText(R.string.msg_ID_invalid);
                         et_ID.setTextColor(Color.RED);
                     }
-                }
-                else{
+                } else {
                     et_ID.setTextColor(Color.BLACK);
                 }
                 et_ID.setSelection(et_ID.getText().length());
