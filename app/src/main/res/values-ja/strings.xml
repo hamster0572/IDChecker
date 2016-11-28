@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">台湾ＩＤ検証機</string>
+    <string name="btn_clear">クリア！</string>
+    <string name="ID_String">台湾ＩＤ</string>
+    <string name="msg_ID_invalid">間違い！</string>
+    <string name="msg_ID_valid">正しい！</string>
+</resources>

@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">台灣身分證/統編驗證器</string>
     <string name="ID_String">台灣身分證/統編</string>
-    <string name="btn_check">驗證！</string>
     <string name="btn_clear">清空！</string>
     <string name="msg_ID_invalid">驗證錯誤！</string>
     <string name="msg_ID_valid">驗證正確！</string>
